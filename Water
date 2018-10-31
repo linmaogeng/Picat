@@ -1,0 +1,84 @@
+import planner.
+
+final((W,(X,Y,Z))) => X = W || Y = W || Z = W.
+
+
+action((W,(_X,Y,Z)),NewState, Action, Cost) ?=>
+
+	Cost = 1,
+	Action = emptyX,
+	NewState = (W,(0,Y,Z)).
+	
+action((W,(X,_Y,Z)),NewState, Action, Cost) ?=>
+
+	Cost = 1,
+	Action = emptyY,
+	NewState = (W,(X,0,Z)).
+	
+action((W,(X,Y,_Z)),NewState, Action, Cost) ?=>
+
+	Cost = 1,
+	Action = emptyZ,
+	NewState = (W,(X,Y,0)).
+	
+action((W,(_X,Y,Z)),NewState, Action, Cost) ?=>
+
+	Cost = 1,
+	Action = fillX,
+	NewState = (W,(12,Y,Z)).
+	
+action((W,(X,_Y,Z)),NewState, Action, Cost) ?=>
+
+	Cost = 1,
+	Action = fillY,
+	NewState = (W,(X,8,Z)).
+	
+action((W,(X,Y,_Z)),NewState, Action, Cost) ?=>
+
+	Cost = 1,
+	Action = fillZ,
+	NewState = (W,(X,Y,3)).		
+	
+		
+
+action((W,(X,Y,Z)),NewState, Action, Cost) ?=>
+	Cost = 1,
+	if X+Y < 8 then NX = 0, NY = Y + X else NX = X-8+Y, NY = 8 end, Action = xtoY,
+	
+	NewState = (W,(NX,NY,Z)).
+
+action((W,(X,Y,Z)),NewState, Action, Cost) ?=>	
+	Cost = 1,
+	if X+Z < 3 then NX = 0, NZ = Z + X else NX = X-3+Z, NZ = 3 end, Action = xtoZ,
+	
+	NewState = (W,(NX,Y,NZ)).
+	
+action((W,(X,Y,Z)),NewState, Action, Cost) ?=>	
+	Cost = 1,
+	if Y+X < 12 then NY = 0, NX = Y + X else NY = Y-12+X, NX = 12 end, Action = ytoX,
+	
+	NewState = (W,(NX,NY,Z)).
+	
+action((W,(X,Y,Z)),NewState, Action, Cost) ?=>	
+	Cost = 1,
+	if Y+Z < 3 then NY = 0, NZ = Z + Y else NY = Y-3+Z, NZ = 3 end, Action = ytoZ,
+	
+	NewState = (W,(X,NY,NZ)).
+
+action((W,(X,Y,Z)),NewState, Action, Cost) ?=>	
+	Cost = 1,
+	if Z+X < 12 then NZ = 0, NX = Z + X else NZ = Z-12+X, NX = 12 end, Action = ztoX,
+	
+	NewState = (W,(NX,Y,NZ)).
+	
+action((W,(X,Y,Z)),NewState, Action, Cost) ?=>	
+	Cost = 1,
+	if Z+Y < 8 then NZ = 0, NY = Y + Z else NZ = Z-8+Y, NY = 8 end, Action = ztoY,
+	
+	NewState = (W,(X,NY,NZ)).
+		
+		
+main() =>
+
+    best_plan((1,(0,0,0)), Plan),
+    printf("%w\n", Plan).
